@@ -22,7 +22,7 @@ export const getDishes = async (req: Request, res: Response) => {
 export const createDish = async (req: Request, res: Response) => {
   try {
     const newDish = await createDishService(req.body);
-    res.status(201).json(createResponse(true, newDish, { message: 'Dish created successfully' }));
+    res.status(201).json(createResponse(true, newDish, { message: 'Item created successfully' }));
   } catch (error) {
     res.status(400).json(createResponse(false, null, { message: 'Invalid request data' }));
   }
@@ -33,9 +33,9 @@ export const updateDish = async (req: Request, res: Response) => {
     const { id } = req.params;
     const updatedDish = await updateDishService(id, req.body);
     if (!updatedDish) {
-      return res.status(404).json(createResponse(false, null, { message: 'Dish not found' }));
+      return res.status(404).json(createResponse(false, null, { message: 'Item not found' }));
     }
-    res.status(200).json(createResponse(true, updatedDish, { message: 'Dish updated successfully' }));
+    res.status(200).json(createResponse(true, updatedDish, { message: 'Item updated successfully' }));
   } catch (error) {
     res.status(500).json(createResponse(false, null, { message: 'Error updating dish' }));
   }
@@ -46,9 +46,9 @@ export const deleteDish = async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await deleteDishService(id);
     if (!result) {
-      return res.status(404).json(createResponse(false, null, { message: 'Dish not found' }));
+      return res.status(404).json(createResponse(false, null, { message: 'Item not found' }));
     }
-    res.status(200).json(createResponse(true, null, { message: 'Dish deleted successfully' }));
+    res.status(200).json(createResponse(true, null, { message: 'Item deleted successfully' }));
   } catch (error) {
     res.status(500).json(createResponse(false, null, { message: 'Error deleting dish' }));
   }
@@ -65,14 +65,14 @@ export const addDishToMenu = async (req: Request, res: Response) => {
     if (!result) {
       return res.status(400).json(
         createResponse(false, null, {
-          message: 'Dish cannot be added to the menu due to constraints.',
+          message: 'Item cannot be added to the menu due to constraints.',
         })
       );
     }
 
     res.status(200).json(
       createResponse(true, result, {
-        message: 'Dish added to menu successfully',
+        message: 'Item added to menu successfully',
       })
     );
   } catch (error: any) {
@@ -106,9 +106,9 @@ export const removeDishFromMenu = async (req: Request, res: Response) => {
     const { menuId, dishId } = req.params;
     const result = await removeDishFromMenuService(menuId, dishId);
     if (!result) {
-      return res.status(404).json(createResponse(false, null, { message: 'Dish not found in menu' }));
+      return res.status(404).json(createResponse(false, null, { message: 'Item not found in menu' }));
     }
-    res.status(200).json(createResponse(true, null, { message: 'Dish removed from menu successfully' }));
+    res.status(200).json(createResponse(true, null, { message: 'Item removed from menu successfully' }));
   } catch (error) {
     res.status(500).json(createResponse(false, null, { message: 'Error removing dish from menu' }));
   }
@@ -122,7 +122,7 @@ export const moveDishBetweenMenus = async (req: Request, res: Response) => {
     if (!result) {
       return res.status(400).json(createResponse(false, null, { message: 'Cannot move dish between menus' }));
     }
-    res.status(200).json(createResponse(true, null, { message: 'Dish moved successfully' }));
+    res.status(200).json(createResponse(true, null, { message: 'Item moved successfully' }));
   } catch (error) {
     res.status(500).json(createResponse(false, null, { message: 'Error moving dish between menus' }));
   }

@@ -19,7 +19,7 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
 ## Features
 
 - **Admin Dashboard**: Manage business lunch menus and dishes via an graphic interface.
-- **Dish Management**: Create, update, delete, and assign dishes to menus. Validate dish types to prevent duplicates within a menu.
+- **Item Management**: Create, update, delete, and assign dishes to menus. Validate dish types to prevent duplicates within a menu.
 - **Menu Management**: Create, edit, delete menus by day and option (e.g., `Monday - Option 1`), with sorted dish types.
 - **Drag-and-Drop**: Easily move dishes between menus with live feedback and sorting by type.
 - **Dynamic Routing**: View or edit dishes via `/dishes/:id`.
@@ -140,7 +140,7 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
 
 ---
 
-### **Create a Dish**
+### **Create a Item**
 
 **Endpoint:** `POST /api/v1/dishes`
 
@@ -165,14 +165,14 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
     "created_at": "2023-12-10T12:34:56Z"
   },
   "meta": {
-    "message": "Dish created successfully"
+    "message": "Item created successfully"
   }
 }
 ```
 
 ---
 
-### **Update a Dish**
+### **Update a Item**
 
 **Endpoint:** `PUT /api/v1/dishes/:id`
 
@@ -197,14 +197,14 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
     "created_at": "2023-12-10T12:34:56Z"
   },
   "meta": {
-    "message": "Dish updated successfully"
+    "message": "Item updated successfully"
   }
 }
 ```
 
 ---
 
-### **Delete a Dish**
+### **Delete a Item**
 
 **Endpoint:** `DELETE /api/v1/dishes/:id`
 
@@ -216,14 +216,14 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
   "success": true,
   "data": null,
   "meta": {
-    "message": "Dish deleted successfully"
+    "message": "Item deleted successfully"
   }
 }
 ```
 
 ---
 
-### **Add Dish to Menu**
+### **Add Item to Menu**
 
 **Endpoint:** `POST /api/v1/dishes/menus/:menuId/dishes`
 
@@ -246,14 +246,14 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
     "created_at": "2023-12-10T12:34:56Z"
   },
   "meta": {
-    "message": "Dish added to menu successfully"
+    "message": "Item added to menu successfully"
   }
 }
 ```
 
 ---
 
-### **Remove Dish from Menu**
+### **Remove Item from Menu**
 
 **Endpoint:** `DELETE /api/v1/dishes/menus/:menuId/dishes/:dishId`
 
@@ -265,7 +265,7 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
   "success": true,
   "data": null,
   "meta": {
-    "message": "Dish removed from menu successfully"
+    "message": "Item removed from menu successfully"
   }
 }
 ```
@@ -412,7 +412,7 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
 
 ---
 
-### **Move Dish Between Menus**
+### **Move Item Between Menus**
 
 **Endpoint:** `POST /api/v1/menus/:fromMenuId/dishes/:dishId/move`
 
@@ -431,7 +431,7 @@ A Vue 3 application for managing restaurant menus. The project allows users to o
   "success": true,
   "data": null,
   "meta": {
-    "message": "Dish moved successfully"
+    "message": "Item moved successfully"
   }
 }
 ```

@@ -1,11 +1,11 @@
 import db from '../db';
-import { Dish } from '../models/dish.model';
+import { Item } from '../models/dish.model';
 import { DishType, isValidDishType } from '../enum/dishTypes.enum';
 
 /**
  * Получить список всех блюд
  */
-export const getAllDishes = async (): Promise<Dish[]> => {
+export const getAllDishes = async (): Promise<Item[]> => {
   return await db('dishes')
     .select('*')
     .then((dishes) => dishes);
@@ -14,7 +14,7 @@ export const getAllDishes = async (): Promise<Dish[]> => {
 /**
  * Создать новое блюдо
  */
-export const createDishService = async (dishData: Partial<Dish>): Promise<Dish | null> => {
+export const createDishService = async (dishData: Partial<Item>): Promise<Item | null> => {
   const { name, type } = dishData;
 
   if (!name || !type) {
@@ -32,7 +32,7 @@ export const createDishService = async (dishData: Partial<Dish>): Promise<Dish |
 /**
  * Обновить блюдо
  */
-export const updateDishService = async (dishId: string, updates: Partial<Dish>): Promise<Dish | null> => {
+export const updateDishService = async (dishId: string, updates: Partial<Item>): Promise<Item | null> => {
   const { name, type } = updates;
 
   if (type && !isValidDishType(type)) {
@@ -55,7 +55,7 @@ export const deleteDishService = async (dishId: string): Promise<boolean> => {
 /**
  * Добавить блюдо в меню
  */
-export const addDishToMenuService = async (menuId: string, dishId: string): Promise<Dish | null> => {
+export const addDishToMenuService = async (menuId: string, dishId: string): Promise<Item | null> => {
   const menu = await db('menus').where({ id: menuId }).first();
   const dish = await db('dishes').where({ id: dishId }).first();
 
@@ -77,7 +77,7 @@ export const addDishToMenuService = async (menuId: string, dishId: string): Prom
     .first();
 
   if (dishExists) {
-    throw new Error('Dish is already added to this menu.');
+    throw new Error('Item is already added to this menu.');
   }
 
   await db('menu_dishes').insert({ menu_id: menuId, dish_id: dishId });

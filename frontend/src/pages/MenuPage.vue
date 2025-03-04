@@ -35,7 +35,7 @@
               {{ dish.name }}
             </option>
           </select>
-          <button type="button" class="add-dish-button" @click="addDishToMenu">Add Dish</button>
+          <button type="button" class="add-dish-button" @click="addDishToMenu">Add Item</button>
         </label>
       </div>
     </div>
@@ -153,7 +153,7 @@ export default defineComponent({
       try {
         await menuStore.addDishToMenu(currentMenuId.value, selectedDish.value);
         updateDishOrder(currentMenuId.value);
-        toast.success('Dish added successfully');
+        toast.success('Item added successfully');
       } catch (error) {
         toast.error(error);
       }
@@ -162,7 +162,7 @@ export default defineComponent({
     const removeDishFromMenu = async (menuId: string, dishId: string) => {
       try {
         await menuStore.removeDishFromMenu(menuId, dishId);
-        toast.success('Dish removed successfully');
+        toast.success('Item removed successfully');
       } catch {
         toast.error('Failed to remove dish');
       }
@@ -181,7 +181,7 @@ export default defineComponent({
         const success = await menuStore.moveDish(fromMenuId, toMenuId, dishId);
 
         if (success) {
-          toast.success('Dish moved successfully');
+          toast.success('Item moved successfully');
         } else {
           toast.error('Failed to move dish');
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="dish-page page-container">
     <h1>Dishes</h1>
-    <center><button @click="showDishModal = true">Add New Dish</button></center>
+    <center><button @click="showDishModal = true">Add New Item</button></center>
     <div v-if="dishes.length" class="dish-list">
       <DishItem 
         v-for="dish in dishes" 
@@ -13,10 +13,10 @@
     </div>
     <p v-else>No dishes available</p>
 
-    <!-- Add/Edit Dish Modal -->
+    <!-- Add/Edit Item Modal -->
     <div v-if="showDishModal" class="modal-overlay" @click.self="closeDishModal">
       <div class="modal">
-        <h2>{{ isEditing ? 'Edit Dish' : 'Add Dish' }}</h2>
+        <h2>{{ isEditing ? 'Edit Item' : 'Add Item' }}</h2>
         <form @submit.prevent="submitDish">
           <div>
             <label for="name">Name:</label>
@@ -79,7 +79,7 @@ export default defineComponent({
         if (response.success) {
           dishes.push(response.data);
           closeDishModal();
-          toast.success('Dish added successfully');
+          toast.success('Item added successfully');
         } else {
           throw new Error('Failed to add dish');
         }
@@ -98,7 +98,7 @@ export default defineComponent({
             dishes[index] = response.data;
           }
           closeDishModal();
-          toast.success('Dish updated successfully');
+          toast.success('Item updated successfully');
         } else {
           throw new Error('Failed to update dish');
         }
@@ -116,7 +116,7 @@ export default defineComponent({
           if (index !== -1) {
             dishes.splice(index, 1);
           }
-          toast.success('Dish deleted successfully');
+          toast.success('Item deleted successfully');
         } else {
           throw new Error('Failed to delete dish');
         }

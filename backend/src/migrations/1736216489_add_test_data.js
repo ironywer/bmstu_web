@@ -77,7 +77,7 @@ exports.up = async function (knex) {
   const mappedMenuDishes = menuDishes.map(({ menu_id, dish_type }) => {
     const dish = dishIds.find((d) => d.type === dish_type);
     if (!dish) {
-      throw new Error(`Dish with type "${dish_type}" not found`);
+      throw new Error(`Item with type "${dish_type}" not found`);
     }
     return {
       menu_id: menu_id.id || menu_id,

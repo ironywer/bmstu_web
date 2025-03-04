@@ -1,8 +1,8 @@
-import { Dish } from './dish.model';
+import { Item } from './dish.model';
 
 export interface Menu {
   id: string;
   day: string;
   variant: string;
-  dishes: Dish[];
+  dishes: Item[];
 }
