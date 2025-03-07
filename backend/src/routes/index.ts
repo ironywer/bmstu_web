@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import menusRoutes from './menus.routes';
-import dishesRoutes from './dishes.routes';
+import ordersRoutes from './orders.routes';
+import itemsRoutes from './items.routes';
 
 const router = Router();
 
-router.use('/menus', menusRoutes);
-
-router.use('/dishes', dishesRoutes);
+router.use('/orders', ordersRoutes);
+router.use('/items', itemsRoutes);
 
 export default router;

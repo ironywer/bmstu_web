@@ -1,43 +1,42 @@
 exports.up = function (knex) {
   return knex.schema
-    .createTable('menus', (table) => {
+    .createTable('orders', (table) => {
       table.increments('id').primary();
-      table.string('day', 50).notNullable();
-      table.string('variant', 50).notNullable();
+      table.string('customerName', 255).notNullable();
+      table.date('orderDate').notNullable();
       table.timestamp('created_at').defaultTo(knex.fn.now());
     })
-    .createTable('dishes', (table) => {
+    .createTable('items', (table) => {
       table.increments('id').primary();
       table.string('name', 255).notNullable();
-      table
-        .enu('type', ['salad', 'starter', 'main course', 'drink', 'dessert'])
-        .notNullable();
+      table.integer('quantity').unsigned().notNullable().defaultTo(0);
       table.timestamp('created_at').defaultTo(knex.fn.now());
     })
-    .createTable('menu_dishes', (table) => {
+    .createTable('order_items', (table) => {
       table.increments('id').primary();
       table
-        .integer('menu_id')
+        .integer('order_id')
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('menus')
+        .inTable('orders')
         .onDelete('CASCADE');
       table
-        .integer('dish_id')
+        .integer('item_id')
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('dishes')
+        .inTable('items')
         .onDelete('CASCADE');
+      table.integer('quantity').unsigned().notNullable();
       table.timestamp('created_at').defaultTo(knex.fn.now());
-      table.unique(['menu_id', 'dish_id']);
+      table.unique(['order_id', 'item_id']);
     });
 };
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTableIfExists('menu_dishes')
-    .dropTableIfExists('dishes')
-    .dropTableIfExists('menus');
+    .dropTableIfExists('order_items')
+    .dropTableIfExists('items')
+    .dropTableIfExists('orders');
 };

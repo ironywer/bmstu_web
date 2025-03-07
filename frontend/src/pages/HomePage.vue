@@ -1,11 +1,11 @@
 <template>
   <div class="home-page">
-    <h1>Welcome to Restaurant Dashboard</h1>
+    <h1>Welcome to Warehouse Dashboard</h1>
     <p>
-      <router-link to="/menus">Go to Menus</router-link>
+      <router-link to="/orders">Go to Orders</router-link>
     </p>
     <p>
-      <router-link to="/dishes">Go to Dishes</router-link>
+      <router-link to="/items">Go to Items</router-link>
     </p>
   </div>
 </template>

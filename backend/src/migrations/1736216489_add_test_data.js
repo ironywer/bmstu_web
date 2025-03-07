@@ -1,95 +1,61 @@
 exports.up = async function (knex) {
-  const menus = [
-    { day: 'Monday', variant: 'Option 1' },
-    { day: 'Tuesday', variant: 'Option 1' },
-    { day: 'Wednesday', variant: 'Option 1' },
-    { day: 'Thursday', variant: 'Option 1' },
-    { day: 'Monday', variant: 'Option 2' },
-    { day: 'Tuesday', variant: 'Option 2' },
-    { day: 'Wednesday', variant: 'Option 2' },
-    { day: 'Friday', variant: 'Option 1' },
-    { day: 'Friday', variant: 'Option 2' },
+  // Создаём тестовые заказы
+  const orders = [
+    { customerName: 'John Doe', orderDate: '2025-03-10' },
+    { customerName: 'Jane Smith', orderDate: '2025-03-11' },
+    { customerName: 'Alice Johnson', orderDate: '2025-03-12' },
+    { customerName: 'Bob Brown', orderDate: '2025-03-13' },
   ];
 
-  const menuIds = await knex('menus').insert(menus).returning('id');
+  const orderIds = await knex('orders').insert(orders).returning('id');
 
-  const dishes = [
-    { name: 'Caesar Salad', type: 'salad' },
-    { name: 'Greek Salad', type: 'salad' },
-    { name: 'Borscht', type: 'starter' },
-    { name: 'Tomato Soup', type: 'starter' },
-    { name: 'Grilled Chicken', type: 'main course' },
-    { name: 'Steak', type: 'main course' },
-    { name: 'Apple Juice', type: 'drink' },
-    { name: 'Orange Juice', type: 'drink' },
-    { name: 'Chocolate Cake', type: 'dessert' },
-    { name: 'Ice Cream', type: 'dessert' },
-    { name: 'Vegetable Soup', type: 'starter' },
-    { name: 'Roast Beef', type: 'main course' },
-    { name: 'Water', type: 'drink' },
-    { name: 'Fruit Salad', type: 'dessert' },
+  // Создаём тестовые товары на складе
+  const items = [
+    { name: 'Laptop', quantity: 10 },
+    { name: 'Smartphone', quantity: 15 },
+    { name: 'T-Shirt', quantity: 25 },
+    { name: 'Sofa', quantity: 5 },
+    { name: 'Drill', quantity: 8 },
+    { name: 'Headphones', quantity: 12 },
+    { name: 'Rice', quantity: 30 },
+    { name: 'Coffee', quantity: 20 },
   ];
 
-  const dishIds = await knex('dishes').insert(dishes).returning(['id', 'type']);
+  const itemIds = await knex('items').insert(items).returning(['id', 'name']);
 
-  if (!menuIds.length || !dishIds.length) {
+  if (!orderIds.length || !itemIds.length) {
     throw new Error('Error while creating test data');
   }
 
-  const menuDishes = [
-    // Option 1 menus
-    { menu_id: menuIds[0], dish_type: 'salad' },
-    { menu_id: menuIds[0], dish_type: 'starter' },
-    { menu_id: menuIds[0], dish_type: 'main course' },
-    { menu_id: menuIds[0], dish_type: 'drink' },
-    { menu_id: menuIds[0], dish_type: 'dessert' },
-    { menu_id: menuIds[1], dish_type: 'salad' },
-    { menu_id: menuIds[1], dish_type: 'starter' },
-    { menu_id: menuIds[1], dish_type: 'main course' },
-    { menu_id: menuIds[2], dish_type: 'salad' },
-    { menu_id: menuIds[2], dish_type: 'starter' },
-    { menu_id: menuIds[2], dish_type: 'main course' },
-    { menu_id: menuIds[2], dish_type: 'drink' },
-    { menu_id: menuIds[3], dish_type: 'salad' },
-    { menu_id: menuIds[3], dish_type: 'starter' },
-    { menu_id: menuIds[3], dish_type: 'dessert' },
-
-    // Option 2 menus
-    { menu_id: menuIds[4], dish_type: 'salad' },
-    { menu_id: menuIds[4], dish_type: 'starter' },
-    { menu_id: menuIds[4], dish_type: 'main course' },
-    { menu_id: menuIds[4], dish_type: 'drink' },
-    { menu_id: menuIds[5], dish_type: 'salad' },
-    { menu_id: menuIds[5], dish_type: 'starter' },
-    { menu_id: menuIds[5], dish_type: 'main course' },
-    { menu_id: menuIds[5], dish_type: 'dessert' },
-    { menu_id: menuIds[6], dish_type: 'salad' },
-    { menu_id: menuIds[6], dish_type: 'starter' },
-    { menu_id: menuIds[6], dish_type: 'main course' },
-    { menu_id: menuIds[6], dish_type: 'drink' },
-    { menu_id: menuIds[7], dish_type: 'main course' },
-    { menu_id: menuIds[7], dish_type: 'dessert' },
-    { menu_id: menuIds[8], dish_type: 'starter' },
-    { menu_id: menuIds[8], dish_type: 'drink' },
-    { menu_id: menuIds[8], dish_type: 'dessert' },
+  // Связываем товары с заказами (моделируем заказанные позиции)
+  const orderItems = [
+    { order_id: orderIds[0], item_name: 'Laptop', quantity: 2 },
+    { order_id: orderIds[0], item_name: 'Smartphone', quantity: 1 },
+    { order_id: orderIds[1], item_name: 'T-Shirt', quantity: 3 },
+    { order_id: orderIds[1], item_name: 'Coffee', quantity: 2 },
+    { order_id: orderIds[2], item_name: 'Sofa', quantity: 1 },
+    { order_id: orderIds[2], item_name: 'Drill', quantity: 2 },
+    { order_id: orderIds[3], item_name: 'Headphones', quantity: 1 },
+    { order_id: orderIds[3], item_name: 'Rice', quantity: 5 },
   ];
 
-  const mappedMenuDishes = menuDishes.map(({ menu_id, dish_type }) => {
-    const dish = dishIds.find((d) => d.type === dish_type);
-    if (!dish) {
-      throw new Error(`Item with type "${dish_type}" not found`);
+  const mappedOrderItems = orderItems.map(({ order_id, item_name, quantity }) => {
+    const item = itemIds.find((i) => i.name === item_name);
+    if (!item) {
+      throw new Error(`Item "${item_name}" not found`);
     }
     return {
-      menu_id: menu_id.id || menu_id,
-      dish_id: dish.id,
+      order_id: order_id.id || order_id,
+      item_id: item.id,
+      quantity,
     };
   });
 
-  await knex('menu_dishes').insert(mappedMenuDishes);
+  await knex('order_items').insert(mappedOrderItems);
 };
 
 exports.down = async function (knex) {
-  await knex('menu_dishes').truncate();
-  await knex('dishes').truncate();
-  await knex('menus').truncate();
+  await knex('order_items').truncate();
+  await knex('items').truncate();
+  await knex('orders').truncate();
 };

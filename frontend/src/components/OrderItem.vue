@@ -1,36 +1,35 @@
 <template>
-  <div class="menu-item" :class="{ 'highlighted': isHighlighted }">
-    <h3>{{ menu.day }} - {{ menu.variant }}</h3>
-    <ul class="dish-list" @dragover.prevent="onDragOver" @dragleave="onDragLeave" @drop="onDrop(menu.id)">
+  <div class="order-item" :class="{ 'highlighted': isHighlighted }">
+    <h3>{{ order.customerName }} - {{ order.orderDate }}</h3>
+    <ul class="item-list" @dragover.prevent="onDragOver" @dragleave="onDragLeave" @drop="onDrop(order.id)">
       <li
-        v-for="dish in menu.dishes"
-        :key="dish.id"
+        v-for="orderItem in order.items"
+        :key="orderItem.item.id"
         draggable="true"
-        @dragstart="onDragStart(dish, menu.id)"
-        @click="navigateToDish(dish.id)"
-        class="clickable-dish"
+        @dragstart="onDragStart(orderItem, order.id)"
+        @click="navigateToItem(orderItem.item.id)"
+        class="clickable-item"
       >
-        {{ dish.name }} ({{ dish.type }})
-        <button class="remove-btn" @click.stop="removeDish(menu.id, dish.id)">×</button>
+        {{ orderItem.item.name }} (x{{ orderItem.quantity }})
+        <button class="remove-btn" @click.stop="removeItem(order.id, orderItem.item.id)">×</button>
       </li>
-      <li v-if="menu.dishes.length === 0" class="empty">
-        Drop dishes here
+      <li v-if="order.items.length === 0" class="empty">
+        Drop items here
       </li>
     </ul>
-    <button @click="editMenu(menu)">Edit</button>
-    <button @click="deleteMenu(menu.id)">Delete</button>
+    <button @click="editOrder(order)">Edit</button>
+    <button @click="deleteOrder(order.id)">Delete</button>
   </div>
 </template>
-
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  name: 'MenuItem',
+  name: 'OrderItem',
   props: {
-    menu: {
+    order: {
       type: Object,
       required: true,
     },
@@ -42,15 +41,15 @@ export default defineComponent({
       type: Function,
       required: true,
     },
-    removeDish: {
+    removeItem: {
       type: Function,
       required: true,
     },
-    editMenu: {
+    editOrder: {
       type: Function,
       required: true,
     },
-    deleteMenu: {
+    deleteOrder: {
       type: Function,
       required: true,
     },
@@ -67,13 +66,13 @@ export default defineComponent({
       isHighlighted.value = false;
     };
 
-    const onDrop = (menuId: string) => {
+    const onDrop = (orderId: string) => {
       isHighlighted.value = false;
-      props.onDrop(menuId);
+      props.onDrop(orderId);
     };
 
-    const navigateToDish = (dishId: string) => {
-      router.push(`/dishes/${dishId}`);
+    const navigateToItem = (itemId: string) => {
+      router.push(`/items/${itemId}`);
     };
 
     return {
@@ -81,14 +80,14 @@ export default defineComponent({
       onDragOver,
       onDragLeave,
       onDrop,
-      navigateToDish,
+      navigateToItem,
     };
   },
 });
 </script>
 
 <style scoped>
-.menu-item {
+.order-item {
   border: 1px solid #ccc;
   box-sizing: border-box;
   padding: 10px;
@@ -98,19 +97,19 @@ export default defineComponent({
   transition: background-color 0.3s, border-color 0.3s;
 }
 
-.menu-item.highlighted {
+.order-item.highlighted {
   background-color: #f0f9f0;
   border-color: #4caf50;
 }
 
-.dish-list {
+.item-list {
   min-height: 50px;
   padding: 10px;
   border: 1px dashed #ccc;
   transition: border-color 0.3s;
 }
 
-.dish-list .empty {
+.item-list .empty {
   color: gray;
   text-align: center;
   font-style: italic;
@@ -131,12 +130,12 @@ export default defineComponent({
   color: darkred;
 }
 
-.clickable-dish {
+.clickable-item {
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.clickable-dish:hover {
+.clickable-item:hover {
   background-color: #f9f9f9;
 }
 </style>
