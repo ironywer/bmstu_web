@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <script type="module" src="index.js"></script>
+    <title>Система управления заказами</title>
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header__user-info">
+            <span class="user-info__role">Сотрудник склада</span>
+        </div>
+        <h1 class="app-header__date" id="current-date"></h1>
+        <button type="button" class="next-day-btn" id="next-day-btn">Следующий день</button>
+    </header>
+
+    <main class="app-main">
+        <ul class="orders-list">
+            <!-- Блок "Добавить новый заказ" -->
+            <li class="orders-list__item order-adder">
+                <button type="button" class="order-adder__btn">+ Новый заказ</button>
+                <form class="order-adder__form" style="display: none;">
+                    <input
+                      type="text"
+                      placeholder="ФИО заказчика"
+                      id="new-order-name"
+                      class="order-adder__input"
+                      required
+                    >
+                    <input
+                      type="date"
+                      id="new-order-date"
+                      class="order-adder__input order-adder__date"
+                      required
+                    >
+                    <button type="button" class="order-adder__submit">Создать заказ</button>
+                </form>
+            </li>
+        </ul>
+    </main>
+
+    <!-- Модалка "Добавление товара" -->
+    <dialog class="modal" id="modal-add-position">
+        <form class="modal__form">
+            <h3 class="modal__title">Добавление товара в заказ</h3>
+            <div class="modal__field">
+                <label for="product-select" class="modal__label">Выберите товар</label>
+                <select id="product-select" class="modal__select" required></select>
+            </div>
+            <div class="modal__field">
+                <label for="product-quantity" class="modal__label">Количество</label>
+                <input type="number" min="1" id="product-quantity" class="modal__input" required>
+            </div>
+            <div class="modal__controls">
+                <button type="button" class="modal-btn modal-ok-btn">Добавить</button>
+                <button type="button" class="modal-btn modal-cancel-btn">Отмена</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Модалка "Удаление позиции" -->
+    <dialog class="modal" id="modal-delete-position">
+        <form class="modal__form">
+            <p class="modal__question"></p>
+            <div class="modal__controls">
+                <button type="button" class="modal-btn modal-ok-btn">Удалить</button>
+                <button type="button" class="modal-btn modal-cancel-btn">Отмена</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Модалка "Редактирование заказа" -->
+    <dialog class="modal" id="modal-edit-order">
+        <form class="modal__form">
+            <h3 class="modal__title">Редактировать заказ</h3>
+            <input type="hidden" id="edit-order-id" />
+
+            <div class="modal__field">
+                <label for="edit-order-name" class="modal__label">ФИО заказчика</label>
+                <input type="text" id="edit-order-name" class="modal__input" required />
+            </div>
+            <div class="modal__field">
+                <label for="edit-order-date" class="modal__label">Дата заказа</label>
+                <input type="date" id="edit-order-date" class="modal__input" required />
+            </div>
+
+            <div class="modal__controls">
+                <button type="button" class="modal-btn modal-edit-ok-btn">Сохранить</button>
+                <button type="button" class="modal-btn modal-edit-cancel-btn">Отмена</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Уведомления -->
+    <dialog class="notifications" id="notifications"></dialog>
+</body>
+</html>
