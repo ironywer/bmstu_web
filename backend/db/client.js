@@ -30,7 +30,7 @@ export default class DB {
                     port: this.#dbPort,
                     database: this.#dbName
                 });
-                
+
                 await this.#dbClient.connect();
                 console.log('DB connection established');
                 return;
@@ -42,7 +42,7 @@ export default class DB {
                         console.error('Error while closing client:', endError);
                     }
                 }
-                
+
                 console.error('Unable to connect to DB:', error);
                 retries -= 1;
                 if (retries === 0) {
@@ -123,8 +123,8 @@ export default class DB {
 
         const dateObj = new Date(orderDate);
         const now = new Date();
-        now.setHours(0,0,0,0);
-        dateObj.setHours(0,0,0,0);
+        now.setHours(0, 0, 0, 0);
+        dateObj.setHours(0, 0, 0, 0);
 
         if (dateObj < now) {
             const errMsg = 'Order date cannot be earlier than current date';
@@ -226,14 +226,21 @@ export default class DB {
             );
 
             await this.#dbClient.query('COMMIT');
-        } catch (error) {
-            await this.#dbClient.query('ROLLBACK');
-            console.error('Unable to add position:', error);
+        }
+        catch (error) {
+            let errorMessage = 'Произошла ошибка при добавлении позиции.';
+
+            if (error.message.includes('Недостаточно товара на складе')) {
+                errorMessage = 'Недостаточно товара на складе! Выберите меньшее количество.';
+            }
+
+            console.error('Ошибка при добавлении позиции:', errorMessage);
             return Promise.reject({
                 type: 'internal',
-                error
+                message: errorMessage
             });
         }
+
     }
 
     async updatePosition({ positionID, quantity }) {
@@ -245,49 +252,49 @@ export default class DB {
                 error: new Error(errMsg)
             });
         }
-    
+
         try {
             await this.#dbClient.query('BEGIN');
-    
+
             // Получаем текущие данные позиции
             const currentPosition = await this.#dbClient.query(
                 'SELECT product_id, quantity FROM positions WHERE id = $1',
                 [positionID]
             );
-    
+
             if (currentPosition.rows.length === 0) {
                 throw new Error(`Position ${positionID} not found`);
             }
-    
+
             const oldQuantity = currentPosition.rows[0].quantity;
             const productID = currentPosition.rows[0].product_id;
-    
+
             // Если нужно больше товара, проверяем остаток
             if (quantity > oldQuantity) {
                 const productQuery = await this.#dbClient.query(
                     'SELECT stock_quantity FROM products WHERE id = $1',
                     [productID]
                 );
-    
+
                 const additionalNeeded = quantity - oldQuantity;
                 if (productQuery.rows[0].stock_quantity < additionalNeeded) {
                     throw new Error(`Недостаточно товара на складе. Доступно: ${productQuery.rows[0].stock_quantity}`);
                 }
             }
-    
+
             // Обновляем количество в позиции
             await this.#dbClient.query(
                 'UPDATE positions SET quantity = $1 WHERE id = $2',
                 [quantity, positionID]
             );
-    
+
             // Обновляем остаток на складе
             const quantityDiff = quantity - oldQuantity;
             await this.#dbClient.query(
                 'UPDATE products SET stock_quantity = stock_quantity - $1 WHERE id = $2',
                 [quantityDiff, productID]
             );
-    
+
             await this.#dbClient.query('COMMIT');
         } catch (error) {
             await this.#dbClient.query('ROLLBACK');

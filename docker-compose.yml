@@ -19,7 +19,6 @@ services:
       retries: 20
 
   backend:
-    # Теперь Dockerfile не строит фронтенд
     build: .
     environment:
       - APP_HOST=0.0.0.0

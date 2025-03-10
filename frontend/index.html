@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,19 @@
     <script type="module" src="index.js"></script>
     <title>Система управления заказами</title>
 </head>
+
 <body>
     <header class="app-header">
         <div class="app-header__user-info">
-            <span class="user-info__role">Сотрудник склада</span>
+            <span class="user-info__role">СКЛАД</span>
         </div>
-        <h1 class="app-header__date" id="current-date"></h1>
-        <button type="button" class="next-day-btn" id="next-day-btn">Следующий день</button>
+        <div class="app-header__date-container">
+            <h1 class="app-header__date" id="current-date"></h1>
+            <button type="button" class="next-day-btn" id="next-day-btn">Следующий день</button>
+        </div>
+        <dialog class="notifications" id="notifications"></dialog>
     </header>
+    
 
     <main class="app-main">
         <ul class="orders-list">
@@ -23,19 +29,9 @@
             <li class="orders-list__item order-adder">
                 <button type="button" class="order-adder__btn">+ Новый заказ</button>
                 <form class="order-adder__form" style="display: none;">
-                    <input
-                      type="text"
-                      placeholder="ФИО заказчика"
-                      id="new-order-name"
-                      class="order-adder__input"
-                      required
-                    >
-                    <input
-                      type="date"
-                      id="new-order-date"
-                      class="order-adder__input order-adder__date"
-                      required
-                    >
+                    <input type="text" placeholder="ФИО заказчика" id="new-order-name" class="order-adder__input"
+                        required>
+                    <input type="date" id="new-order-date" class="order-adder__input order-adder__date" required>
                     <button type="button" class="order-adder__submit">Создать заказ</button>
                 </form>
             </li>
@@ -95,6 +91,7 @@
     </dialog>
 
     <!-- Уведомления -->
-    <dialog class="notifications" id="notifications"></dialog>
+    
 </body>
+
 </html>

@@ -1,22 +1,35 @@
   :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --secondary-color: #64748b;
-    --success-color: #22c55e;
+    --primary-color: #1e293b;
+    /* Тёмно-серый, основной цвет */
+    --primary-hover: #334155;
+    /* Серо-синий при наведении */
+    --secondary-color: #475569;
+    /* Светло-серый акцент */
+    --success-color: #10b981;
+    /* Зелёный для успеха */
     --danger-color: #ef4444;
+    /* Красный для ошибок */
     --warning-color: #f59e0b;
-    
-    --bg-primary: #ffffff;
-    --bg-secondary: #f1f5f9;
-    --bg-tertiary: #e2e8f0;
-    
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-light: #94a3b8;
-    
-    --border-color: #cbd5e1;
+    /* Оранжевый для предупреждений */
+
+    --bg-primary: #0f172a;
+    /* Глубокий тёмно-синий фон */
+    --bg-secondary: #1e293b;
+    /* Чуть светлее */
+    --bg-tertiary: #334155;
+    /* Средний серый */
+
+    --text-primary: #f8fafc;
+    /* Белый текст */
+    --text-secondary: #f8fafc;
+    /* Светло-серый текст */
+    --text-light: #cbd5e1;
+    /* Серый для дополнительных элементов */
+
+    --border-color: #475569;
+    /* Цвет границ */
     --border-radius: 0.5rem;
-    
+
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -55,8 +68,18 @@
   }
 
   .app-header__user-info {
-    color: var(--text-secondary);
-    font-weight: 500;
+    font-size: 1.8rem;
+    /* Увеличиваем размер */
+    font-weight: 700;
+    /* Делаем жирным */
+    text-transform: uppercase;
+    /* Заглавные буквы */
+    letter-spacing: 1.5px;
+    /* Разрядка между буквами */
+    color: var(--text-primary);
+    /* Используем основной зеленый */
+    font-family: 'Montserrat', sans-serif;
+    /* Красивый современный шрифт */
   }
 
   .app-header__date {
@@ -64,13 +87,47 @@
     color: var(--text-primary);
   }
 
+  .app-header__date-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* Отступ между датой и кнопкой */
+    margin: 0 auto;
+    /* Центрирование блока */
+  }
+
   .next-day-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--border-radius);
     background-color: var(--primary-color);
     color: white;
-    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .next-day-btn:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .app-header__date-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* Отступ между датой и кнопкой */
+  }
+
+  .next-day-btn {
     padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
+    font-size: 1rem;
     font-weight: 500;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
     transition: background-color 0.2s;
   }
 
@@ -176,7 +233,7 @@
   }
 
   .order-adder__btn {
-    color: var(--primary-color);
+    color: var(--text-primary);
     background: none;
     border: none;
     font-size: 1rem;
@@ -228,7 +285,7 @@
     padding: 2rem;
     background-color: var(--bg-primary);
     box-shadow: var(--shadow-md);
-
+    color: var(--text-primary);
     z-index: 1000 !important;
   }
 
@@ -238,6 +295,7 @@
   }
 
   .modal__form {
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -303,25 +361,45 @@
   }
 
   .notifications {
-    border: none !important;
-    position: fixed !important;
-    bottom: 2rem !important;
-    right: 2rem !important;
-    background: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    position: fixed;
+    /* Фиксируем в углу экрана */
+    top: 1rem;
+    /* Отступ сверху */
+    right: 1rem;
+    /* Отступ справа */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Выравниваем уведомления вправо */
+    gap: 0.5rem;
+    /* Расстояние между уведомлениями */
+    z-index: 9999;
+    /* Поверх всех элементов */
+    width: auto;
     pointer-events: none;
-
-    z-index: 999999 !important;
+    border: none !important;
+    /* Полностью убирает границу */
+    background: none !important;
+    /* Убирает фон */
+    box-shadow: none !important;
+    /* Убирает тени */
+    outline: none !important;
+    /* Убирает фокусную рамку */
   }
+
 
   .notification {
     padding: 1rem;
     border-radius: var(--border-radius);
     color: white;
-    margin-bottom: 0.5rem;
+    font-weight: 500;
     box-shadow: var(--shadow);
-    min-width: 300px;
+    opacity: 0.95;
+    animation: fadeIn 0.3s ease-out;
+    pointer-events: auto;
+    min-width: 250px;
+    max-width: 300px;
+    text-align: left;
   }
 
   .notification-success {
@@ -332,7 +410,82 @@
     background-color: var(--danger-color);
   }
 
+  /* Анимация появления */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 0.95;
+      transform: translateY(0);
+    }
+  }
+
+
   .order_droppable {
     outline: 2px dashed #888;
-    background-color: #f0f9ff; 
+    background-color: var(--secondary-color);
+  }
+
+
+  #modal-edit-position {
+    position: fixed !important;
+    inset: 50% auto auto 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    background-color: var(--bg-primary);
+    box-shadow: var(--shadow-md);
+    z-index: 1000 !important;
+    color: var(--text-primary);
+    min-width: 400px;
+  }
+
+  #modal-edit-position .modal__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  #modal-edit-position .modal__input {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  #modal-edit-position .modal__controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  #modal-edit-position .modal-btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+  }
+
+  #modal-edit-position .modal-edit-position-ok-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+  }
+
+  #modal-edit-position .modal-edit-position-ok-btn:hover {
+    background-color: var(--primary-hover);
+  }
+
+  #modal-edit-position .modal-edit-position-cancel-btn {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+  }
+
+  #modal-edit-position .modal-edit-position-cancel-btn:hover {
+    background-color: var(--bg-secondary);
   }

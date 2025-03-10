@@ -258,7 +258,7 @@ export default class App {
             const result = await AppModel.processDailyUpdate({ dateStr: isoDateStr });
 
             document.getElementById('current-date').textContent =
-                `Текущая дата: ${this.#currentDate.toLocaleDateString()}`;
+                `${this.#currentDate.toLocaleDateString()}`;
 
             this.#products = result.products;
             this.#orders.forEach(o => {
@@ -308,7 +308,16 @@ export default class App {
 
         const positionID = crypto.randomUUID();
         const productID = productSelect.value;
-        const quantity = parseInt(quantityInput.value, 10);
+        const quantity = Number(quantityInput.value);
+
+        if (isNaN(quantity) || quantity <= 0) {
+            this.addNotification({
+                text: 'Ошибка: количество должно быть положительным числом!',
+                type: 'error'
+            });
+            return;
+        }
+        
         const orderID = localStorage.getItem('addPositionOrderID');
 
         try {
@@ -459,6 +468,6 @@ export default class App {
 
         this.initModals();
         document.getElementById('current-date').textContent =
-            `Текущая дата: ${this.#currentDate.toLocaleDateString()}`;
+            `${this.#currentDate.toLocaleDateString()}`;
     }
 }

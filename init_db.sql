@@ -19,9 +19,10 @@ CREATE TABLE positions (
 );
 
 INSERT INTO products (id, name, stock_quantity) VALUES
-    (gen_random_uuid(), 'Laptop', floor(random() * 50 + 20)::int),
-    (gen_random_uuid(), 'Smartphone', floor(random() * 100 + 50)::int),
-    (gen_random_uuid(), 'Tablet', floor(random() * 30 + 15)::int),
-    (gen_random_uuid(), 'Monitor', floor(random() * 40 + 10)::int),
-    (gen_random_uuid(), 'Keyboard', floor(random() * 200 + 100)::int),
-    (gen_random_uuid(), 'Mouse', floor(random() * 300 + 150)::int);
+    (gen_random_uuid(), 'Graphics Card', floor(random() * 30 + 10)::int),
+    (gen_random_uuid(), 'Gaming Chair', floor(random() * 50 + 15)::int),
+    (gen_random_uuid(), 'Mechanical Keyboard', floor(random() * 100 + 20)::int),
+    (gen_random_uuid(), 'Wireless Headset', floor(random() * 40 + 10)::int),
+    (gen_random_uuid(), 'External SSD 1TB', floor(random() * 60 + 25)::int),
+    (gen_random_uuid(), 'Curved Monitor 27"', floor(random() * 25 + 5)::int);
+

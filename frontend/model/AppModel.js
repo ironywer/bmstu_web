@@ -112,8 +112,9 @@ export default class AppModel {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                return Promise.reject(errorData);
-            }
+                const message = errorData.message || 'Неизвестная ошибка при добавлении позиции.';
+                return Promise.reject({ message });
+            }            
             return {
                 timestamp: new Date().toISOString(),
                 message: `Position successfully added to order`
