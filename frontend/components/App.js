@@ -62,7 +62,17 @@ export default class App {
 
         const orderID = crypto.randomUUID();
         const orderDate = new Date(dateInput.value);
-
+        const today = this.#currentDate;
+        orderDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        
+        if (orderDate < this.#currentDate) {
+            this.addNotification({
+                text: 'Ошибка: нельзя создать заказ на прошедшую дату!',
+                type: 'error'
+            });
+            return;
+        }
         try {
             await AppModel.addOrder({
                 orderID,
