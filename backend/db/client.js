@@ -123,17 +123,17 @@ export default class DB {
 
         const dateObj = new Date(orderDate);
         const now = new Date();
-        now.setHours(0, 0, 0, 0);
-        dateObj.setHours(0, 0, 0, 0);
+        now.setHours(12, 0, 0, 0);
+        dateObj.setHours(12, 0, 0, 0);
 
-        if (dateObj < now) {
-            const errMsg = 'Order date cannot be earlier than current date';
-            console.error(errMsg);
-            return Promise.reject({
-                type: 'client',
-                error: new Error(errMsg)
-            });
-        }
+        // if (dateObj < now) {
+        //     const errMsg = 'Нельзя создать заказ на прошедшую дату';
+        //     console.error(errMsg);
+        //     return Promise.reject({
+        //         type: 'client',
+        //         error: new Error(errMsg)
+        //     });
+        // }
 
         try {
             await this.#dbClient.query(
@@ -161,8 +161,8 @@ export default class DB {
 
         const dateObj = new Date(orderDate);
         const now = new Date();
-        now.setHours(0, 0, 0, 0);
-        dateObj.setHours(0, 0, 0, 0);
+        now.setHours(12, 0, 0, 0);
+        dateObj.setHours(12, 0, 0, 0);
         if (dateObj < now) {
             const errMsg = 'Order date cannot be earlier than current date';
             console.error(errMsg);
@@ -421,16 +421,17 @@ export default class DB {
                 `SELECT id FROM orders WHERE order_date < $1`,
                 [virtualDate]
             );
-
+            
+            console.log(`Удаляем заказы с датой < ${virtualDate}`);
             for (const order of expiredOrders.rows) {
-                // Вернуть товары на склад
+                // Удалить товары со склада
                 const positions = await this.#dbClient.query(
                     'SELECT product_id, quantity FROM positions WHERE order_id = $1',
                     [order.id]
                 );
                 for (const pos of positions.rows) {
                     await this.#dbClient.query(
-                        'UPDATE products SET stock_quantity = stock_quantity + $1 WHERE id = $2',
+                        'UPDATE products SET stock_quantity = stock_quantity - $1 WHERE id = $2',
                         [pos.quantity, pos.product_id]
                     );
                 }

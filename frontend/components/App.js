@@ -5,6 +5,12 @@ export default class App {
     #orders = [];
     #products = [];
     #currentDate = new Date();
+    
+    constructor() {
+        const savedDate = localStorage.getItem('currentDate');
+        this.#currentDate = savedDate ? new Date(savedDate) : new Date();
+    }
+    
 
     onEscapeKeydown = (event) => {
         if (event.key === 'Escape') {
@@ -63,8 +69,8 @@ export default class App {
         const orderID = crypto.randomUUID();
         const orderDate = new Date(dateInput.value);
         const today = this.#currentDate;
-        orderDate.setHours(0, 0, 0, 0);
-        today.setHours(0, 0, 0, 0);
+        orderDate.setHours(12, 0, 0, 0);
+        today.setHours(12, 0, 0, 0);
         
         if (orderDate < this.#currentDate) {
             this.addNotification({
@@ -259,13 +265,15 @@ export default class App {
     onNextDay = async () => {
         try {
             this.#currentDate.setDate(this.#currentDate.getDate() + 1);
-
+            localStorage.setItem('currentDate', this.#currentDate.toISOString());
             const yyyy = this.#currentDate.getFullYear();
             const mm = String(this.#currentDate.getMonth() + 1).padStart(2, '0');
             const dd = String(this.#currentDate.getDate()).padStart(2, '0');
             const isoDateStr = `${yyyy}-${mm}-${dd}`;
 
             const result = await AppModel.processDailyUpdate({ dateStr: isoDateStr });
+            // this.#orders = this.#orders.filter(o => new Date(o.orderDate) >= this.#currentDate);
+            
 
             document.getElementById('current-date').textContent =
                 `${this.#currentDate.toLocaleDateString()}`;
@@ -440,6 +448,8 @@ export default class App {
         document.querySelector('.order-adder__submit').addEventListener('click', this.onCreateOrder);
 
         document.querySelector('.next-day-btn').addEventListener('click', this.onNextDay);
+        document.getElementById('current-date').textContent =
+        `${this.#currentDate.toLocaleDateString()}`;
         document.addEventListener('keydown', this.onEscapeKeydown);
 
         this.initNotifications();
